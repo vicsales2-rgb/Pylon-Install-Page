@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pylon Data Exporter | Install</title>
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --primary-hover: #27ae60;
+            --bg: #f8f9fa;
+            --text: #333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 { margin-top: 0; color: #111; font-size: 24px; }
+        p { color: #666; margin-bottom: 30px; }
+
+        .bookmarklet {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white !important;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            transition: transform 0.2s, background-color 0.2s;
+            cursor: move;
+        }
+
+        .bookmarklet:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .instructions {
+            text-align: left;
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            background: #eee;
+            color: #666;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        code {
+            background: #f1f1f1;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .warning {
+            font-size: 13px;
+            color: #e74c3c;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Pylon Project Exporter</h1>
+    <p>Drag the green button below to your Bookmarks Bar to install the tool.</p>
+
+    <a id="bookmarklet-link" class="bookmarklet" href="#">
+        Export Pylon Projects
+    </a>
+
+    <p class="warning">↑ Drag this button to your Bookmarks Bar (top of browser)</p>
+
+    <div class="instructions">
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>
+                <strong>Show Bookmarks Bar:</strong> Press <code>Ctrl</code> + <code>Shift</code> + <code>B</code> (Windows) or <code>Cmd</code> + <code>Shift</code> + <code>B</code> (Mac).
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>
+                <strong>Install:</strong> Drag the green <strong>"Export Pylon Projects"</strong> button up into your Bookmarks Bar.
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>
+                <strong>Use:</strong> Open Pylon, go to your project list, and click the bookmark.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // We store the code in a template literal here to avoid HTML attribute quoting issues
+    const bookmarkletCode = `javascript:(function(){const style=document.createElement('style');style.innerHTML='#pylon-modal-over{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:sans-serif;}#pylon-modal{background:#fff;padding:25px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.2);width:340px;text-align:center;}#pylon-modal h3{margin:0 0 15px;color:#333;font-size:18px;}#pylon-modal input{width:100%;padding:10px;margin-bottom:20px;border:1px solid #ddd;border-radius:6px;font-size:16px;box-sizing:border-box;}#pylon-modal .btns{display:flex;gap:10px;}#pylon-modal button{flex:1;padding:10px;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;}#pylon-btn-exp{background:#2ecc71;color:#fff;}#pylon-btn-can{background:#eee;color:#666;}';document.head.appendChild(style);const over=document.createElement('div');over.id='pylon-modal-over';over.innerHTML='<div id="pylon-modal"><h3>Export Projects</h3><p style="font-size:13px;color:#666;margin-bottom:10px;">Select start date (Created At):</p><input type="date" id="pylon-date-val" value="'+new Date().toISOString().split('T')[0]+'"><div class="btns"><button id="pylon-btn-can">Cancel</button><button id="pylon-btn-exp">Export CSV</button></div></div>';document.body.appendChild(over);const close=()=>{if(document.getElementById('pylon-modal-over'))document.body.removeChild(over);document.head.removeChild(style);};const fmt=(ds)=>{if(!ds)return'';const d=new Date(ds);return isNaN(d)?'':d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'})};document.getElementById('pylon-btn-can').onclick=close;document.getElementById('pylon-btn-exp').onclick=()=>{const selDate=new Date(document.getElementById('pylon-date-val').value);if(isNaN(selDate)){alert('Invalid date');return}const headers=['Pylon ID','Quote Generation date','Name','Contact Number','Email','Address','Status','Remarks','BDM','Updated Date','Signed Date'];let rows=[];document.querySelectorAll('.browse__row').forEach(row=>{const cTime=row.querySelector('.browse__meta--created time')?.getAttribute('datetime');if(!cTime)return;const created=new Date(cTime);if(created>=selDate){const uTime=row.querySelector('.browse__meta--updated time')?.getAttribute('datetime');const sTime=row.querySelector('.browse__meta--signed time')?.getAttribute('datetime');const details=row.querySelectorAll('.browse__details span');const name=(details[0]?.textContent||'').trim();let phone=(details[1]?.textContent||'').replace(/[^\\d+]/g,'');if(phone.length===10&&phone.startsWith('0'))phone=phone.replace(/(\\d{4})(\\d{3})(\d{3})/,'$1 $2 $3');let email=(details[2]?.textContent||'').trim();if(email.toLowerCase()==='email'||!email)email='Not listed';const id=(details[3]?.textContent||'').trim().replace(/^·\\s*/,'');const addr=(row.querySelector('.browse__address')?.getAttribute('title')||'').trim();const stat=(row.querySelector('.indicator__meta')?.textContent||'').trim();const pr=(row.querySelector('.browse__project-price')?.textContent||'').trim();const sz=(row.querySelector('.browse__project-size')?.textContent||'').trim();const bdm=(row.querySelector('.browse__meta--created .browse__creator')?.textContent||'').trim();const rem=sz+(pr?' | '+pr:'');rows.push([id,fmt(cTime),name,phone,email,addr,stat,rem,bdm,fmt(uTime),fmt(sTime)])}});if(rows.length===0){alert('No projects found.');close();return}rows.reverse();const escape=x=>'"'+(x||'').replace(/"/g,'""')+'"';let csv=headers.map(h=>'"'+h+'"').join(',')+'\\n';rows.forEach(r=>{csv+=r.map(escape).join(',')+'\\n'});const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pylon_tracker_export_'+new Date().toISOString().split('T')[0]+'.csv';a.click();close()}})();`;
+
+    const link = document.getElementById('bookmarklet-link');
+    
+    // Set the href attribute
+    link.href = bookmarkletCode;
+
+    // Add an alert so if they just CLICK it, it tells them to DRAG it.
+    link.addEventListener('click', function(e) {
+        if (e.target.href.startsWith('javascript:')) {
+            e.preventDefault();
+            alert('Don\'t click me yet! Drag me up to your Bookmarks Bar first.');
+        }
+    });
+</script>
+
+</body>
+</html>
